@@ -1,0 +1,26 @@
+on: [push]
+
+jobs:
+  statuscheck_demo_job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: failurestep
+        shell: pwsh
+        run: write-host 'not failing now'
+
+      - name: runifsuccess
+        if: ${{ success() }}
+        shell: pwsh
+        run: write-host 'run on prev steps success'
+
+      - name: runiferror
+        if: ${{ failure() }}
+        shell: pwsh
+        run: write-host 'run because faild step'
+
+      - name: runalways
+        if: ${{ always() }}
+        shell: pwsh
+        run: write-host 'run always'
