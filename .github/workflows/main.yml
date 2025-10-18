@@ -34,7 +34,6 @@ jobs:
     - name: App Center
       uses: wzieba/AppCenter-Github-Action@v1.0.0
       with:
-        # App name followed by username
         appName: Ch-DemoOrg/demoapp
         # Upload token - you can get one from appcenter.ms/
           settings
