@@ -12,24 +12,37 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  # This job name is mybuild
+  mybuild:
+    # Runner type that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed
-      as part of the job
+  Android:
+    runs-on: macos-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so
-        your job can access it
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v1
+    # omitted steps for brevity
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+  AppCenterDistibute:
+    runs-on: ubuntu-latest
+    needs: Android
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: my-artifact
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+    - name: App Center
+      uses: wzieba/AppCenter-Github-Action@v1.0.0
+      with:
+        # App name followed by username
+        appName: Ch-DemoOrg/demoapp
+        # Upload token - you can get one from appcenter.ms/
+          settings
+        token: ${{ secrets.AppCenterAPIToken }}
+        # Distribution group
+        group: alphatesters
+        # Artefact to upload (.apk or .ipa)
+        file: AwesomeApp/AwesomeApp.Android/bin/Debug/com.
+        companyname.AwesomeApp.apk
+        # Release notes visible on release page
+        releaseNotes: "demo test"
